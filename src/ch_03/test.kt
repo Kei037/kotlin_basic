@@ -18,12 +18,9 @@ package ch_03
 
 fun main() {
     var sum = 0
-
     for (index in 1..5) {
         print("${index}번째 정수를 입력해 주세요 >> ")
-        val num = readln().toInt()
-
-        sum += num
+        sum += readln().trim().toInt()
     }
     println("5개의 정수의 합은 ${sum}입니다.")
 }
