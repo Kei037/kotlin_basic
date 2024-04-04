@@ -15,6 +15,7 @@ package ch_03
     1) 5번 반복하는 for 반복문 작성
     2) 반복문 안에서 정수 입력
  */
+
 fun main() {
     var sum = 0
 
