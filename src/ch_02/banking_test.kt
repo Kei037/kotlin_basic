@@ -20,9 +20,9 @@ fun main() {
         when (selectNo) {
 			1 -> idx = createAccount(idx, max, anos, owners, balances)
 			2 -> viewAccountList(idx, anos, owners, balances)
-			3 -> deposit(idx, anos, owners, balances)
-			4 -> withdraw(idx, anos, owners, balances)
-			5 -> viewAccount(idx, anos, owners, balances)
+			3 -> deposit(idx, anos, balances, max)
+			4 -> withdraw(idx, anos, balances, max)
+			5 -> viewAccount(idx, anos, owners, balances, max)
             6 -> run = false
         }
     }
@@ -45,51 +45,115 @@ fun createAccount(idx: Int, max: Int, anos: Array<String>, owners: Array<String>
         print("초기입금액: ")
         val balance: Int = readln().toInt()
 
-        if (ano != null && owner != null && balance != null && balance >= 0) {
+        val findIdx = findAccount(idx, anos, max, ano)
+        if (findIdx == max) { // 중복된 계좌가 없다면 idx값이 max와 같은 값으로 반환됨
             anos[idx] = ano
             owners[idx] = owner
             balances[idx] = balance
             println("결과: 계좌가 생성되었습니다.")
-            return idx + 1
+            return idx + 1 // 계좌생성시 idx 값이 1 증가
         } else {
-            println("입력이 잘못되었습니다.")
+            println("중복된 계좌번호가 존재합니다.")
         }
     }
-    return idx
+    return idx // 계좌 생성 실패시 받았던 idx값을 그대로 반환
 }
 fun viewAccountList(idx: Int, anos: Array<String>, owners: Array<String>, balances: IntArray) {
     println("--------------")
     println("계좌목록")
     println("--------------")
+    println()
 
     for (i in 0 until idx) {
         println("${anos[i]} ${owners[i]} ${balances[i]}")
     }
-
 }
 
-fun deposit(idx: Int, anos: Array<String>, owners: Array<String>, balances: IntArray) {
-    TODO("Not yet implemented")
+fun deposit(idx: Int, anos: Array<String>, balances: IntArray, max: Int) {
+    println("--------------")
+    println("예금")
+    println("--------------")
+    println()
+    print("계좌번호: ")
+    val ano: String = readln()
+
+    // 계좌조회
+    val findIdx = findAccount(idx, anos, max, ano)
+    if (findIdx == max) {
+        println("결과: 계좌가 없습니다.")
+        println()
+        return
+    }
+    print("예금액: ")
+    val money = readln().trim().toInt()
+
+    if (money <= 0) {
+        println("0원 이상만 입금가능합니다.")
+        return
+    }
+    balances[findIdx] += money
+    println("예금이 성공되었습니다.")
 }
 
-fun withdraw(idx: Int, anos: Array<String>, owners: Array<String>, balances: IntArray) {
-    TODO("Not yet implemented")
+fun withdraw(idx: Int, anos: Array<String>, balances: IntArray, max: Int) {
+    println("--------------")
+    println("예금")
+    println("--------------")
+    println()
+    print("계좌번호: ")
+    val ano: String = readln()
+
+    // 계좌조회
+    val findIdx = findAccount(idx, anos, max, ano)
+    if (findIdx == max) {
+        println("결과: 계좌가 없습니다.")
+        println()
+        return
+    }
+
+    print("출금액: ")
+    val money = readln().trim().toInt()
+
+    if (money <= 0) {
+        println("0원 이상만 출금가능합니다.")
+        return
+    }
+
+    if (money > balances[findIdx]) {
+        println("잔액보다 출금액이 커서 출금에 실패했습니다.")
+        return
+    }
+
+    balances[findIdx] -= money
+    println("출금이 성공되었습니다.")
 }
 
-fun viewAccount(idx: Int, anos: Array<String>, owners: Array<String>, balances: IntArray) {
+fun viewAccount(idx: Int, anos: Array<String>, owners: Array<String>, balances: IntArray, max: Int) {
     println("--------------")
     println("조회")
     println("--------------")
     println()
     print("계좌번호: ")
-
     val ano: String = readln()
 
-    for (i in 0 until  idx) {
+    // 계좌조회
+    val findIdx = findAccount(idx, anos, max, ano)
+    if (findIdx == max) {
+        println("결과: 계좌가 없습니다.")
+        println()
+        return
+    }
+    println("${anos[findIdx]} ${owners[findIdx]} ${balances[findIdx]}")
+}
+
+fun findAccount(idx: Int, anos: Array<String>, max: Int, ano:String): Int {
+    var findIdx = max
+    for (i in 0 until idx) {
         if (ano == anos[i]) {
-            println("${anos[i]} ${owners[i]} ${balances[i]}")
+            findIdx = i
         }
     }
+    return findIdx
 }
 
 /*
