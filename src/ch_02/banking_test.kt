@@ -1,7 +1,5 @@
 package ch_02
-/*
 
- */
 fun main() {
     val max = 3
     val anos = Array(max, {""}) // 통장번호
