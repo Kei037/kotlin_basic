@@ -26,6 +26,7 @@ fun main() {
     }
     println("프로그램 종료")
 }
+
 fun createAccount(idx: Int, max: Int, anos: Array<String>, owners: Array<String>, balances: IntArray): Int {
     if (idx >= max) {
         println("생성 가능한 계좌의 범위를 초과했습니다.")
